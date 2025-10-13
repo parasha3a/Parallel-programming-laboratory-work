@@ -1,0 +1,181 @@
+СТРУКТУРА ПРОЕКТА - Параллельное программирование
+==================================================
+
+Корневая папка: C:\Parallel and multithreaded programming\
+
+Файлы проекта:
+--------------
+OpenMP_Labs.sln                     - Solution файл Visual Studio
+README.md                           - Подробная документация
+INSTALL_MPI.md                      - Инструкция по установке MPI
+PROJECT_STRUCTURE.txt               - Этот файл
+.gitignore                          - Для контроля версий
+
+Задания OpenMP (2-12):
+----------------------
+
+Task02_HelloWorld/
+    main.cpp                        - Многопоточная программа "Hello World!"
+    Task02_HelloWorld.vcxproj       - Файл проекта
+    
+Task03_IAm/
+    main.cpp                        - Программа "I am!" (вывод номера нити)
+    Task03_IAm.vcxproj              - Файл проекта
+    
+Task04_SharedPrivate/
+    main.cpp                        - Демонстрация shared/private переменных с race condition
+    Task04_SharedPrivate.vcxproj    - Файл проекта
+    
+Task05_Reduction/
+    main.cpp                        - Параметр reduction (сумма 1..N)
+    Task05_Reduction.vcxproj        - Файл проекта
+    
+Task06_ForLoop/
+    main.cpp                        - Распараллеливание циклов (#pragma omp for)
+    Task06_ForLoop.vcxproj          - Файл проекта
+    
+Task07_Schedule/
+    main.cpp                        - Исследование параметра schedule
+    Task07_Schedule.vcxproj         - Файл проекта
+    
+Task08_Pi/
+    main.cpp                        - Вычисление числа π
+    Task08_Pi.vcxproj               - Файл проекта
+    
+Task09_Matrix/
+    main.cpp                        - Умножение матриц A × B = C
+    Task09_Matrix.vcxproj           - Файл проекта
+    
+Task10_Sections/
+    main.cpp                        - Параллельные секции (sections/section)
+    Task10_Sections.vcxproj         - Файл проекта
+    
+Task11_SumAtomic/
+    main.cpp                        - Сумма чисел с директивой atomic
+    Task11_SumAtomic.vcxproj        - Файл проекта
+    
+Task12_PiCritical/
+    main.cpp                        - Число π с директивой critical
+    Task12_PiCritical.vcxproj       - Файл проекта
+
+
+Задания MPI (15-20):
+--------------------
+
+Task15_MPI_IAm/
+    main.cpp                        - MPI программа "I am!"
+    run.bat                         - Скрипт запуска (2-3 процесса)
+    Task15_MPI_IAm.vcxproj          - Файл проекта
+    
+Task16_MPI_FirstSecond/
+    main.cpp                        - MPI программа "First-Second"
+    run.bat                         - Скрипт запуска (4 процесса)
+    Task16_MPI_FirstSecond.vcxproj  - Файл проекта
+    
+Task17_MPI_Send/
+    main.cpp                        - MPI блокирующие обмены (Send/Recv)
+    run.bat                         - Скрипт запуска (2 процесса)
+    Task17_MPI_Send.vcxproj         - Файл проекта
+    
+Task18_MPI_Baton/
+    main.cpp                        - MPI эстафетная палочка (ring)
+    run.bat                         - Скрипт запуска (4 процесса)
+    Task18_MPI_Baton.vcxproj        - Файл проекта
+    
+Task19_MPI_MasterSlave/
+    main.cpp                        - MPI схема мастер-рабочие
+    run.bat                         - Скрипт запуска (4 процесса)
+    Task19_MPI_MasterSlave.vcxproj  - Файл проекта
+    
+Task20_MPI_Isend/
+    main.cpp                        - MPI неблокирующие обмены (Isend/Irecv)
+    run.bat                         - Скрипт запуска (2 процесса)
+    Task20_MPI_Isend.vcxproj        - Файл проекта
+
+
+Особенности реализации:
+-----------------------
+
+1. Все проекты настроены с поддержкой OpenMP (флаг /openmp)
+2. Используется C++ и стандартные библиоки (iostream, omp.h)
+3. Конфигурации: Debug и Release для платформы x64
+4. PlatformToolset: v143 (Visual Studio 2022, совместимо с VS 2019)
+5. Все проекты - консольные приложения
+
+
+Соответствие методичке:
+-----------------------
+
+OpenMP (задания 2-12):
+✓ Задание 2: 4 нити выводят "Hello World!"
+✓ Задание 3: Каждая нить выводит номер и общее количество + версия с четными номерами
+✓ Задание 4: Демонстрация shared/private с Sleep(100) для race condition
+✓ Задание 5: Версия с 2 нитями (if-else) + версия для k нитей с reduction
+✓ Задание 6: Использование #pragma omp for с выводом информации об итерациях
+✓ Задание 7: Тестирование параметров schedule (static, dynamic, guided)
+✓ Задание 8: Вычисление π по формуле численного интегрирования
+✓ Задание 9: Параллельное умножение матриц с collapse(2)
+✓ Задание 10: Параллельные секции (4 секции) с выводом информации
+✓ Задание 11: Сумма чисел с atomic (без reduction)
+✓ Задание 12: Число π с critical (без reduction)
+
+MPI (задания 15-20):
+✓ Задание 15: MPI_Init, MPI_Comm_rank, MPI_Comm_size, MPI_Finalize
+✓ Задание 16: Распределение процессов (first/second)
+✓ Задание 17: MPI_Send и MPI_Recv (блокирующие операции)
+✓ Задание 18: Эстафетная палочка (ring communication)
+✓ Задание 19: Схема master-slave
+✓ Задание 20: MPI_Isend, MPI_Irecv, MPI_Wait (неблокирующие операции)
+
+
+Запуск:
+-------
+
+### OpenMP программы (Task02-Task12):
+1. Откройте OpenMP_Labs.sln в Visual Studio 2019/2022
+2. Выберите конфигурацию (Debug или Release)
+3. Выберите платформу x64
+4. Выберите проект для запуска (правой кнопкой -> Set as Startup Project)
+5. Нажмите F5 (с отладкой) или Ctrl+F5 (без отладки)
+
+### MPI программы (Task15-Task20):
+1. Соберите проект в Visual Studio (как описано выше)
+2. Запустите через bat-файл:
+   cd Task15_MPI_IAm
+   run.bat
+   
+3. Или вручную через командную строку:
+   "C:\Program Files\Microsoft MPI\Bin\mpiexec.exe" -np 3 Task15_MPI_IAm.exe
+
+
+Примечания:
+-----------
+
+OpenMP:
+- Для Task04_SharedPrivate требуется Windows.h (функция Sleep)
+- Порядок вывода из разных нитей может меняться при разных запусках
+- Для измерения производительности используйте Release-сборку
+- Количество нитей можно задать через omp_set_num_threads() или num_threads()
+
+MPI:
+- Требуется установка Microsoft MPI (см. INSTALL_MPI.md)
+- Программы запускаются только через mpiexec.exe
+- Количество процессов задается параметром -np
+- Каждый процесс имеет отдельную память
+- Коммуникация только через MPI_Send/MPI_Recv
+
+
+Технические детали:
+-------------------
+
+Версия OpenMP: 2.0+
+Версия MPI: Microsoft MPI v10.1.2+
+Язык: C++
+Кодировка: UTF-8
+Платформа: Windows x64
+Компилятор: MSVC (Visual Studio 2019+)
+
+Файлы проектов (.vcxproj):
+- OpenMP проекты: OpenMPSupport=true
+- MPI проекты: AdditionalIncludeDirectories, AdditionalLibraryDirectories, msmpi.lib
+
