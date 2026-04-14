@@ -100,6 +100,62 @@ msbuild Task02_HelloWorld\Task02_HelloWorld.vcxproj /p:Configuration=Release /p:
 .\x64\Release\Task02_HelloWorld.exe
 ```
 
+<a id="macos-mpi-openmp"></a>
+### macOS (консоль): Open MPI + OpenMP (задания 30–32)
+
+На macOS используйте **Homebrew**: **Open MPI** (`mpicc`, `mpirun`) и **LLVM OpenMP** (`libomp`, заголовок `omp.h`). **Microsoft MPI** для macOS не предназначен.
+
+**Один раз** (если `brew` не найден, сначала выполните строки из вывода установщика Homebrew — `eval "$(/opt/homebrew/bin/brew shellenv)"`):
+
+```bash
+brew install open-mpi libomp
+```
+
+Дальше в той же сессии терминала задайте префикс `libomp`. Команды **`cd Task…`** ниже выполняйте из **корня репозитория** (если вы уже в другой папке — сначала `cd` в корень).
+
+```bash
+LIBOMP="$(brew --prefix libomp)"
+```
+
+**Задание 30** (`Task30_MPI_OpenMP_Project`, ввод с клавиатуры не нужен):
+
+```bash
+cd Task30_MPI_OpenMP_Project
+mpicc -O2 -Xpreprocessor -fopenmp -I"$LIBOMP/include" main.cpp -L"$LIBOMP/lib" -lomp -o task30
+OMP_NUM_THREADS=4 mpirun -np 2 ./task30
+```
+
+**Задание 31** (в коде MSVC используется `scanf_s`; на macOS добавьте `-Dscanf_s=scanf`):
+
+```bash
+cd Task31_MPI_OpenMP_IAm
+mpicc -O2 -Dscanf_s=scanf -Xpreprocessor -fopenmp -I"$LIBOMP/include" main.cpp -L"$LIBOMP/lib" -lomp -o task31
+OMP_NUM_THREADS=3 mpirun -np 2 ./task31
+```
+
+После запуска введите число нитей, когда запросит процесс 0.
+
+**Задание 32**:
+
+```bash
+cd Task32_MPI_OpenMP_Pi
+mpicc -O2 -Dscanf_s=scanf -Xpreprocessor -fopenmp -I"$LIBOMP/include" main.cpp -L"$LIBOMP/lib" -lomp -o task32
+OMP_NUM_THREADS=4 mpirun -np 2 ./task32
+```
+
+Введите **N** (точность), когда запросит процесс 0.
+
+**Если путь к репозиторию содержит пробелы**, заключите его в кавычки, например:
+
+```bash
+cd "/Users/nn89/vibecoding /Parallel-programming-laboratory-work/Task32_MPI_OpenMP_Pi"
+LIBOMP="$(brew --prefix libomp)"
+mpicc -O2 -Dscanf_s=scanf -Xpreprocessor -fopenmp -I"$LIBOMP/include" main.cpp -L"$LIBOMP/lib" -lomp -o task32
+OMP_NUM_THREADS=4 mpirun -np 2 ./task32
+```
+
+Переменная **`OMP_NUM_THREADS`** задаёт число нитей OpenMP на один MPI-процесс; **`-np`** у `mpirun` — число MPI-процессов (как в `run.bat` для Windows).
+
 ## Описание заданий
 
 ---
@@ -622,7 +678,9 @@ mpiexec.exe -np 8 Task29_MPI_Scalability.exe
 
 Учебное задание для настройки проекта с поддержкой как MPI, так и OpenMP.
 
-**Запуск**: `mpiexec.exe -np 2 Task30_MPI_OpenMP_Project.exe`
+**Запуск (Windows)**: `mpiexec.exe -np 2 Task30_MPI_OpenMP_Project.exe`
+
+**Запуск (macOS, консоль)**: см. раздел [macOS (консоль): Open MPI + OpenMP](#macos-mpi-openmp).
 
 **Выходные данные**: Сообщения от каждой нити каждого процесса
 
@@ -642,7 +700,9 @@ mpiexec.exe -np 8 Task29_MPI_Scalability.exe
 
 Комбинация MPI (многопроцессность) и OpenMP (многопоточность).
 
-**Запуск**: `mpiexec.exe -np 2 Task31_MPI_OpenMP_IAm.exe`
+**Запуск (Windows)**: `mpiexec.exe -np 2 Task31_MPI_OpenMP_IAm.exe`
+
+**Запуск (macOS, консоль)**: см. раздел [macOS (консоль): Open MPI + OpenMP](#macos-mpi-openmp).
 
 **Выходные данные**: Информация о каждой нити из каждого процесса
 
@@ -653,7 +713,9 @@ mpiexec.exe -np 8 Task29_MPI_Scalability.exe
 
 Вычисление π с использованием MPI для распределения между процессами и OpenMP для распараллеливания внутри процесса.
 
-**Запуск**: `mpiexec.exe -np 2 Task32_MPI_OpenMP_Pi.exe`
+**Запуск (Windows)**: `mpiexec.exe -np 2 Task32_MPI_OpenMP_Pi.exe`
+
+**Запуск (macOS, консоль)**: см. раздел [macOS (консоль): Open MPI + OpenMP](#macos-mpi-openmp).
 
 **Входные данные**: N - точность вычисления
 
