@@ -86,6 +86,42 @@ echo %MSMPI_INC%
 echo %MSMPI_LIB64%
 ```
 
+## Go (лабораторные `TaskGo_Lab/`)
+
+Для программ на Go нужен компилятор **Go 1.22+** ([скачать](https://go.dev/dl/)).
+
+### Windows
+Установите официальный MSI с `go.dev`, затем в новом терминале:
+
+```powershell
+go version
+```
+
+### macOS (Homebrew)
+
+```bash
+brew install go
+eval "$(/opt/homebrew/bin/brew shellenv)"   # при необходимости добавить brew в PATH
+go version
+```
+
+### Запуск лаб из репозитория
+
+Из **корня** (файл `go.work` подключает `./TaskGo_Lab`):
+
+```bash
+go run ./TaskGo_Lab/hello
+```
+
+Из каталога модуля:
+
+```bash
+cd TaskGo_Lab
+go run ./hello
+```
+
+Подробнее — [README.md](README.md), раздел «Go: сборка и запуск».
+
 ## Решение проблем
 
 См. файл [MPI_TROUBLESHOOTING.md](MPI_TROUBLESHOOTING.md) для решения типичных проблем.

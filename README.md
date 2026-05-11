@@ -1,8 +1,9 @@
 # Лабораторные работы по параллельному программированию
 
-Проект содержит реализацию заданий по технологиям OpenMP и MPI на C++:
+Проект содержит реализацию заданий по технологиям **OpenMP** и **MPI** на C++, а также лабораторный блок на **Go**:
 - **OpenMP** (задания 2-12): многопоточное программирование с общей памятью
-- **MPI** (задания 15-20): параллельное программирование с передачей сообщений
+- **MPI** (задания 15-20 и далее): параллельное программирование с передачей сообщений
+- **Go** (`TaskGo_Lab/`): горутины, каналы, `sync`, `atomic` — аналоги идей из лаб (число π методом Симпсона см. `Task32_MPI_OpenMP_Pi`)
 
 ## Структура проекта
 
@@ -68,14 +69,29 @@ OpenMP_Labs/
     └── Task20_MPI_Isend.vcxproj
 ```
 
+### Лабораторные на Go (`TaskGo_Lab/`)
+
+В корне репозитория файл **`go.work`** подключает модуль `TaskGo_Lab`, чтобы команды `go run` можно было вызывать из корня.
+
+```
+TaskGo_Lab/
+├── go.mod                 # module parallel-lab-go (Go 1.22+)
+├── hello/main.go          # Несколько горутин, sync.WaitGroup
+├── blocking/main.go       # Каналы: неблокирующий select, блокирующий приём, буфер + WaitGroup
+├── sum/main.go            # Параллельная сумма среза, atomic.Int64
+├── matrix/main.go         # Параллельное C = A·B, ввод размеров, полный вывод A/B/C
+└── pi/main.go             # π методом Симпсона (как в Task32), частичные суммы через канал
+```
+
 ## Требования
 
 - **Visual Studio 2019** или новее (с поддержкой C++14 и выше)
 - **Поддержка OpenMP** (включена в Visual Studio по умолчанию)
 - **Microsoft MPI** (для заданий 15-32) - [Скачать MS-MPI](https://www.microsoft.com/en-us/download/details.aspx?id=105289)
 - **Windows 10** или выше
+- **Go 1.22+** (только для `TaskGo_Lab/`) — [Установка](https://go.dev/dl/) или `brew install go` (macOS)
 
-> ⚠️ **Важно:** После клонирования репозитория см. [SETUP.md](SETUP.md) для инструкций по установке MPI и настройке путей.
+> ⚠️ **Важно:** После клонирования репозитория см. [SETUP.md](SETUP.md) для инструкций по установке MPI и настройке путей; для Go — раздел *Go* в том же файле.
 
 ## Сборка и запуск
 
@@ -155,6 +171,41 @@ OMP_NUM_THREADS=4 mpirun -np 2 ./task32
 ```
 
 Переменная **`OMP_NUM_THREADS`** задаёт число нитей OpenMP на один MPI-процесс; **`-np`** у `mpirun` — число MPI-процессов (как в `run.bat` для Windows).
+
+---
+
+## Go: сборка и запуск (`TaskGo_Lab`)
+
+Из **корня репозитория** (удобно при `go.work`):
+
+```bash
+cd "/path/to/Parallel-programming-laboratory-work"
+go run ./TaskGo_Lab/hello
+go run ./TaskGo_Lab/blocking
+go run ./TaskGo_Lab/sum
+go run ./TaskGo_Lab/matrix    # ввод: строки A, столбцы A; печать всех ячеек A, B, C
+echo 1000000 | go run ./TaskGo_Lab/pi   # или интерактивный ввод N
+```
+
+Из каталога модуля:
+
+```bash
+cd TaskGo_Lab
+go run ./hello
+# ... остальные подпакеты аналогично
+```
+
+**Что используется в коде:** `go` (горутины), `sync.WaitGroup`, `sync/atomic`, каналы `chan`, `select`, `runtime.GOMAXPROCS` / `NumCPU`.
+
+| Подпапка   | Содержание |
+|------------|------------|
+| `hello`    | Параллельный вывод приветствий с разных горутин, ожидание через `WaitGroup` |
+| `blocking` | Неблокирующий `select` с `default`, блокирующее чтение, несколько отправителей в буфер |
+| `sum`      | Разбиение массива на чанки, накопление суммы через `atomic.Int64` |
+| `matrix`   | Распределение строк результата по воркерам; умножение `A(rows×cols)·B(cols×rows)` |
+| `pi`       | Составное правило Симпсона на [0,1]; шаг по индексу как у MPI-рангов |
+
+---
 
 ## Описание заданий
 
@@ -803,13 +854,16 @@ run.bat
 📦 Parallel and Multithreaded Programming
 ├── 📄 README.md                    # Основная документация
 ├── 📄 SETUP.md                     # Инструкции по установке и настройке
+├── 📄 go.work                      # Go workspace (модуль TaskGo_Lab из корня)
 ├── 📄 INSTALL_MPI.md               # Детальная установка MPI
 ├── 📄 MPI_TROUBLESHOOTING.md       # Решение проблем с MPI
+├── 📄 SUMMARY.md                   # Сводка по проекту
 ├── 📄 TASKS_COMPLETED.md           # Список выполненных заданий
 ├── 📄 LICENSE                      # Лицензия MIT
 ├── 📄 .gitignore                   # Игнорируемые файлы
 ├── 📄 OpenMP_Labs.sln              # Solution Visual Studio
 ├── 📁 MPI_Include/                 # Заголовочные файлы MPI
+├── 📁 TaskGo_Lab/                  # Лабораторные на Go (hello, blocking, sum, matrix, pi)
 ├── 📁 Task02_HelloWorld/           # Задания OpenMP (02-12)
 ├── 📁 Task15_MPI_IAm/              # Задания MPI (15-28)
 ├── 📁 Task29_MPI_Scalability/      # Задания масштабируемости (29)
@@ -825,12 +879,13 @@ run.bat
 
 MIT License - см. файл [LICENSE](LICENSE)
 
-Учебный проект для изучения параллельного программирования с использованием OpenMP и MPI.
+Учебный проект для изучения параллельного программирования с использованием OpenMP, MPI и средств конкурентности Go.
 
 ## Благодарности
 
 - Microsoft MPI за библиотеку MPI для Windows
 - Сообщество OpenMP за стандарт параллельного программирования
+- Команда Go за язык и стандартную библиотеку
 
 ---
 

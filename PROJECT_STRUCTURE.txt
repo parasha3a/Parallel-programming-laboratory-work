@@ -6,10 +6,20 @@
 Файлы проекта:
 --------------
 OpenMP_Labs.sln                     - Solution файл Visual Studio
+go.work                             - Go workspace: модуль TaskGo_Lab из корня репозитория
 README.md                           - Подробная документация
 INSTALL_MPI.md                      - Инструкция по установке MPI
 PROJECT_STRUCTURE.txt               - Этот файл
 .gitignore                          - Для контроля версий
+
+Задания Go (TaskGo_Lab/):
+-------------------------
+TaskGo_Lab/go.mod                   - module parallel-lab-go
+TaskGo_Lab/hello/main.go            - Горутины, WaitGroup
+TaskGo_Lab/blocking/main.go         - Каналы, блокирующий/неблокирующий приём
+TaskGo_Lab/sum/main.go              - Параллельная сумма, atomic
+TaskGo_Lab/matrix/main.go           - Параллельное умножение матриц
+TaskGo_Lab/pi/main.go               - Число пи (Симпсон)
 
 Задания OpenMP (2-12):
 ----------------------

@@ -1,5 +1,7 @@
 # Инструкция по установке и настройке Microsoft MPI
 
+Лабораторные на **Go** (`TaskGo_Lab/`) MPI не требуют; для них см. [SETUP.md](SETUP.md) и раздел Go в [README.md](README.md).
+
 ## Шаг 1: Загрузка Microsoft MPI
 
 1. Перейдите на официальную страницу Microsoft MPI:
